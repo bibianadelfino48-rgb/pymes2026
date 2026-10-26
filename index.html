@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratorio de Programación Aplicada | Tecnicatura Superior en PYMES</title>
+
+  <!-- Tailwind CSS CDN -->
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #fdf6e2;
+      --panel-bg: #ffffff;
+      --primary: #0284c7;
+      --secondary: #0f172a;
+      --accent: #10b981;
+      --js-color: #d97706;
+      --text-main: #1e293b;
+      --border-color: #cbd5e1;
+      --focus-ring: #3b82f6;
+    }
+
+
+    /* Modos de Contraste DUA */
+    body.high-contrast, body.alto-contraste {
+      --bg-color: #000000;
+      --panel-bg: #121212;
+      --primary: #ffff00;
+      --secondary: #00ffff;
+      --accent: #00ff00;
+      --text-main: #ffffff;
+      --border-color: #ffffff;
+      background-color: #000000 !important;
+      color: #ffff00 !important;
+    }
+
+
+    body.high-contrast .card-accessible,
+    body.high-contrast header,
+    body.high-contrast nav.sidebar,
+    body.high-contrast .theory-card,
+    body.high-contrast .editor-panel,
+    body.high-contrast .preview-panel {
+      background-color: #121212 !important;
+      border-color: #ffff00 !important;
+      color: #ffff00 !important;
+    }
+
+
+    body.high-contrast button,
+    body.high-contrast .btn-acc,
+    body.high-contrast .btn-touch {
+      border: 3px solid #ffff00 !important;
+      background-color: #000000 !important;
+      color: #ffff00 !important;
+    }
+
+
+    /* Tipografía adaptada / dislexia */
+    .dyslexia-font {
+      font-family: 'Comic Sans MS', 'Arial', sans-serif !important;
+      letter-spacing: 0.05em;
+      word-spacing: 0.1em;
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    body {
+      font-family: 'Nunito', 'Verdana', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+
+    h1, h2, h3, .heading-font {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+    }
+
+
+    /* CABECERA PRINCIPAL */
+    header {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #ffffff;
+      padding: 16px 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+
+    /* BARRA DE ACCESIBILIDAD DUA */
+    .accessibility-bar {
+      background: #e0f2fe;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 2px solid #bae6fd;
+    }
+
+
+    .btn-acc, .btn-touch {
+      background: white;
+      border: 2px solid #0284c7;
+      color: #0369a1;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      min-height: 44px;
+      touch-action: manipulation;
+    }
+
+
+    .btn-acc:focus, .btn-acc:hover, .btn-touch:focus, .btn-touch:hover {
+      outline: 4px solid var(--focus-ring) !important;
+      outline-offset: 2px;
+      background: #f0f9ff;
+    }
+
+
+    /* ESTRUCTURA PRINCIPAL DE APRENDIZAJE INTERACTIVO */
+    .app-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+
+    /* MENÚ LATERAL DE TEMAS */
+    nav.sidebar {
+      width: 360px;
+      background: var(--panel-bg);
+      border-right: 3px solid var(--border-color);
+      padding: 20px;
+      overflow-y: auto;
+      max-height: calc(100vh - 180px);
+    }
+
+
+    .menu-section-title {
+      font-size: 1rem;
+      color: var(--primary);
+      margin: 15px 0 10px 0;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 4px;
+    }
+
+
+    .menu-section-title.js-title {
+      color: var(--js-color);
+      border-bottom-color: var(--js-color);
+    }
+
+
+    .menu-list {
+      list-style: none;
+    }
+
+
+    .menu-item {
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      background: #f1f5f9;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+
+
+    .menu-item:hover, .menu-item.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+
+    .menu-item.js-item:hover, .menu-item.js-item.active {
+      background: var(--js-color);
+      color: white;
+      border-color: var(--js-color);
+    }
+
+
+    /* ÁREA DE TRABAJO DERECHA */
+    main.content-area {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+
+    /* PANEL DE TEORÍA */
+    .theory-card {
+      background: var(--panel-bg);
+      border: 3px solid var(--primary);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+
+    .theory-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+
+    .theory-title {
+      font-size: 1.35rem;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+
+    /* ENTORNO DE SIMULACIÓN Y EDICIÓN */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+
+    .editor-panel, .preview-panel {
+      background: var(--panel-bg);
+      border: 3px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+
+    .panel-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.88rem;
+      padding: 8px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #0f172a;
+      resize: vertical;
+    }
+
+
+    .btn-run {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+
+    .btn-run:hover, .btn-run:focus {
+      transform: scale(1.02);
+    }
+
+
+    .preview-box {
+      min-height: 250px;
+      border: 2px dashed var(--primary);
+      border-radius: 12px;
+      padding: 15px;
+      background: #ffffff;
+      color: #000000;
+      overflow: auto;
+    }
+
+
+    /* REGLAS PARA RESTAURAR VIÑETAS Y NÚMEROS EN LA VISTA PREVIA (ANULA EL RESET DE TAILWIND) */
+    .preview-box ul {
+      list-style-type: disc !important;
+      padding-left: 25px !important;
+    }
+
+
+    .preview-box ol {
+      list-style-type: decimal !important;
+      padding-left: 25px !important;
+    }
+
+
+    .preview-box li {
+      display: list-item !important;
+    }
+
+
+    @keyframes bounce-subtle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .bounce-icon {
+      animation: bounce-subtle 2s infinite ease-in-out;
+    }
+
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      nav.sidebar {
+        width: 100%;
+        max-height: 250px;
+      }
+    }
+  </style>
+
+</head>
+<body class="min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- CABECERA UNIFICADA -->
+
+  <header>
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-4xl bounce-icon" role="img" aria-label="Edificio PYME">🏢</span>
+        <div>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-white">🏢 Tecnicatura Superior en PYMES - Herramientas Digitales</h1>
+          <p class="text-sm font-semibold text-sky-100">Administración • Costos • Comercialización • Finanzas • Operaciones • TICs</p>
+        </div>
+      </div>
+      <a href="index.html" class="bg-sky-900 hover:bg-slate-900 text-white font-bold px-4 py-2 rounded-xl text-sm transition shadow border border-sky-300">
+        ⬅️ Volver al Portal Principal
+      </a>
+    </div>
+  </header>
+
+  <!-- BARRA DE ACCESIBILIDAD Y APOYOS (DUA) -->
+
+  <div class="accessibility-bar" aria-label="Ajustes de accesibilidad">
+    <div class="flex flex-wrap gap-2">
+      <button class="btn-acc" onclick="speakCurrentTheory()">🔊 Escuchar Explicación</button>
+      <button class="btn-acc" onclick="toggleContrast()">👁️ Modo Alto Contraste</button>
+      <button class="btn-acc" onclick="toggleFuenteLetra()">🔤 Fuente Fácil / Dislexia</button>
+      <button class="btn-acc" onclick="celebrateAchievement()">🎉 ¡Celebrar Logro!</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 1: INTRODUCCIÓN TEÓRICA GENERAL CON METÁFORA VISUAL -->
+
+  <section aria-labelledby="titulo-teoria-intro" class="max-w-7xl mx-auto px-4 mt-6 w-full">
+    <div class="card-accessible bg-white border-4 border-sky-300 rounded-3xl p-6 shadow-lg">
+      <div class="flex items-center justify-between mb-4 border-b-2 border-sky-100 pb-3">
+        <h2 id="titulo-teoria-intro" class="text-2xl md:text-3xl font-extrabold text-sky-950 flex items-center gap-3">
+          <span>📚</span> Introducción: Desarrollo Web para la Gestión de PYMES
+        </h2>
+        <button onclick="leerTextoPorId('contenido-teoria-intro')" class="btn-touch bg-sky-600 hover:bg-sky-700 text-white font-bold px-4 py-2 rounded-xl shadow">
+          🔊 Leer sección
+        </button>
+      </div>
+
+  <div id="contenido-teoria-intro" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+    
+    <!-- Tarjeta HTML -->
+    <div class="card-accessible bg-sky-50 border-4 border-sky-300 rounded-2xl p-5 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="text-4xl" role="img" aria-label="Huesos">🦴</span>
+          <h3 class="text-2xl font-bold text-sky-900">1. HTML = El Esqueleto Operativo</h3>
+        </div>
+        <p class="text-slate-700 mb-3 font-medium">
+          El <strong>HTML</strong> le da la <strong>estructura</strong> a los sistemas y sitios de la empresa (catálogos de productos, paneles o listas de costos).
+        </p>
+        <ul class="list-disc list-inside space-y-1 text-slate-700 bg-white p-3 rounded-xl border border-sky-200 text-base">
+          <li>Organiza con <strong>head</strong>, <strong>header</strong>, <strong>body</strong> y <strong>footer</strong>.</li>
+          <li>Soporta <strong>Títulos</strong>, fichas de inventario y tablas de costos.</li>
+          <li>Inserta <strong>Multimedia</strong>, comprobantes y enlaces comerciales.</li>
+        </ul>
+      </div>
+      <div class="mt-3 pt-2 border-t border-sky-200 font-bold text-sky-800 text-center text-sm">
+        ¡La base sólida para estructurar la presencia e información corporativa!
+      </div>
+    </div>
+
+    <!-- Tarjeta CSS -->
+    <div class="card-accessible bg-pink-50 border-4 border-pink-300 rounded-2xl p-5 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="text-4xl" role="img" aria-label="Ropa y Pintura">🎨</span>
+          <h3 class="text-2xl font-bold text-pink-900">2. CSS = Identidad y Branding</h3>
+        </div>
+        <p class="text-slate-700 mb-3 font-medium">
+          El <strong>CSS</strong> construye la <strong>identidad visual y presencia de marca</strong> de la PYME frente a clientes e inversores.
+        </p>
+        <ul class="list-disc list-inside space-y-1 text-slate-700 bg-white p-3 rounded-xl border border-pink-200 text-base">
+          <li>Aplica paletas de <strong>Colores corporativos</strong>.</li>
+          <li>Estructura catálogos y paneles con <strong>Grid</strong> y <strong>Flexbox</strong>.</li>
+          <li>Garantiza adaptabilidad <strong>Responsive</strong> en dispositivos móviles.</li>
+        </ul>
+      </div>
+      <div class="mt-3 pt-2 border-t border-pink-200 font-bold text-pink-800 text-center text-sm">
+        ¡Refleja el profesionalismo y la imagen institucional de tu PYME!
+      </div>
+    </div>
+
+    <!-- Tarjeta JS -->
+    <div class="card-accessible bg-amber-50 border-4 border-amber-400 rounded-2xl p-5 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="text-4xl" role="img" aria-label="Cerebro o Rayo">⚡</span>
+          <h3 class="text-2xl font-bold text-amber-900">3. JS = Lógica de Negocio</h3>
+        </div>
+        <p class="text-slate-700 mb-3 font-medium">
+          <strong>JavaScript</strong> procesa <strong>cálculos contables, cotizaciones e interacciones</strong>.
+        </p>
+        <ul class="list-disc list-inside space-y-1 text-slate-700 bg-white p-3 rounded-xl border border-amber-200 text-base">
+          <li>Calcula <strong>Márgenes de ganancia</strong>, IVA y Punto de Equilibrio.</li>
+          <li>Simula proyecciones de <strong>Flujo de Caja</strong>.</li>
+          <li>Garantiza interacciones automatizadas con clientes en tiempo real.</li>
+        </ul>
+      </div>
+      <div class="mt-3 pt-2 border-t border-amber-200 font-bold text-amber-800 text-center text-sm">
+        ¡Aporta automatización, cálculos y dinámica comercial a tu PYME!
+      </div>
+    </div>
+
+  </div>
+</div>
+  </section>
+
+  <!-- SECCIÓN 2: SIMULADOR INTERACTIVO BÁSICO -->
+
+  <section aria-labelledby="titulo-simulador-rapido" class="max-w-7xl mx-auto px-4 mt-6 w-full">
+    <div class="card-accessible bg-white border-4 border-emerald-300 rounded-3xl p-6 shadow-lg">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-4 border-b-2 border-emerald-100 pb-3">
+        <h2 id="titulo-simulador-rapido" class="text-2xl md:text-3xl font-extrabold text-emerald-950 flex items-center gap-3">
+          <span>⚙️</span> Taller Rápido: Creador de Ficha Corporativa PYME
+        </h2>
+        <button onclick="leerTexto('Selecciona el área de tu emprendimiento o PYME y ajusta los controles para ver el diseño en vivo.')" class="btn-touch bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl shadow">
+          🔊 Explicación
+        </button>
+      </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    
+    <!-- Panel Controles -->
+    <div class="lg:col-span-5 space-y-4 bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+      <div>
+        <label for="input-titulo" class="block font-bold text-slate-700 text-sm mb-1">1. Nombre del Emprendimiento / PYME (HTML):</label>
+        <input type="text" id="input-titulo" value="Mi PYME S.R.L." oninput="actualizarSimuladorRapido()" class="w-full p-2 border-2 border-slate-300 rounded-xl font-bold bg-white text-slate-800">
+      </div>
+
+      <div>
+        <label for="select-emoji" class="block font-bold text-slate-700 text-sm mb-1">2. Área o Sector Estratégico (HTML):</label>
+        <select id="select-emoji" onchange="actualizarSimuladorRapido()" class="w-full p-2 border-2 border-slate-300 rounded-xl font-bold bg-white text-slate-800">
+          <option value="💼">💼 Administración y Finanzas</option>
+          <option value="📦">📦 Logística y Cadena de Suministro</option>
+          <option value="📣">📣 Marketing y Ventas Digitales</option>
+          <option value="👥">👥 Recursos Humanos y Talento</option>
+          <option value="🏭">🏭 Producción y Operaciones</option>
+          <option value="🌐">🌐 Comercio Exterior e Innovación</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="select-color-fondo" class="block font-bold text-slate-700 text-sm mb-1">3. Color de Identidad Corporativa (CSS):</label>
+        <select id="select-color-fondo" onchange="actualizarSimuladorRapido()" class="w-full p-2 border-2 border-slate-300 rounded-xl font-bold bg-white text-slate-800">
+          <option value="#fef08a">Amarillo Comercial 💼</option>
+          <option value="#bae6fd">Azul Financiero 📊</option>
+          <option value="#bbf7d0">Verde Sustentable 🌱</option>
+          <option value="#fbcfe8">Rosa Emprendedor 🚀</option>
+          <option value="#e9d5ff">Violeta Innovación 🌐</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="select-tamano" class="block font-bold text-slate-700 text-sm mb-1">4. Tamaño del Encabezado (CSS):</label>
+        <select id="select-tamano" onchange="actualizarSimuladorRapido()" class="w-full p-2 border-2 border-slate-300 rounded-xl font-bold bg-white text-slate-800">
+          <option value="20px">Normal (20px)</option>
+          <option value="26px" selected>Grande (26px)</option>
+          <option value="32px">Destacado (32px)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Vista Previa e Inspector -->
+    <div class="lg:col-span-7 space-y-4 flex flex-col justify-between">
+      <div id="pantalla-preview" class="w-full min-h-[160px] rounded-2xl border-4 border-slate-800 p-4 flex flex-col items-center justify-center text-center shadow-inner transition-all duration-300">
+        <span id="preview-emoji" class="text-5xl mb-2">💼</span>
+        <h1 id="preview-titulo" class="font-bold leading-tight">Mi PYME S.R.L.</h1>
+      </div>
+
+      <div class="bg-slate-900 text-emerald-400 p-4 rounded-2xl font-mono text-xs border-4 border-slate-700 space-y-2">
+        <div>
+          <span class="text-sky-400 font-bold">&lt;!-- Estructura HTML --&gt;</span>
+          <pre id="codigo-html" class="text-amber-200 whitespace-pre-wrap mt-1"></pre>
+        </div>
+        <div>
+          <span class="text-pink-400 font-bold">/* Estilos CSS */</span>
+          <pre id="codigo-css" class="text-pink-200 whitespace-pre-wrap mt-1"></pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+  </section>
+
+  <!-- SECCIÓN 3: LABORATORIO COMPLETO CON 15 HTML, 15 CSS Y 15 JS -->
+
+  <section class="max-w-7xl mx-auto px-4 mt-8 w-full flex-grow">
+    <h2 class="text-2xl font-black text-sky-950 mb-4 flex items-center gap-2">
+      <span>🛠️</span> Explorador Técnico en PYMES (15 HTML + 15 CSS + 15 JS)
+    </h2>
+
+<div class="app-container border-4 border-slate-300 rounded-3xl bg-white shadow-lg overflow-hidden">
+
+  <!-- MENÚ LATERAL DE TEMAS -->
+  <nav class="sidebar">
+    
+    <div class="menu-section-title">🧱 15 Temas HTML</div>
+    <ul class="menu-list">
+      <li class="menu-item active" onclick="loadTopic('head_body')">1. Estructura Head y Body</li>
+      <li class="menu-item" onclick="loadTopic('header_footer')">2. Encabezado y Pie Institucional</li>
+      <li class="menu-item" onclick="loadTopic('h1_h6')">3. Jerarquía de Títulos (h1-h6)</li>
+      <li class="menu-item" onclick="loadTopic('p')">4. Párrafos e Informes Ejecutivos</li>
+      <li class="menu-item" onclick="loadTopic('lists')">5. Listas de Control de Inventario</li>
+      <li class="menu-item" onclick="loadTopic('links')">6. Hipervínculos a Catálogos (&lt;a&gt;)</li>
+      <li class="menu-item" onclick="loadTopic('images')">7. Galería de Productos (&lt;img&gt;)</li>
+      <li class="menu-item" onclick="loadTopic('form')">8. Formularios de Solicitud</li>
+      <li class="menu-item" onclick="loadTopic('nav_menu')">9. Menús de Navegación Comercial</li>
+      <li class="menu-item" onclick="loadTopic('sections')">10. Secciones Semánticas Corporativas</li>
+      <li class="menu-item" onclick="loadTopic('multimedia')">11. Video Promocional y Demo</li>
+      <li class="menu-item" onclick="loadTopic('tables_eco')">12. Tablas de Balance y Costos</li>
+      <li class="menu-item" onclick="loadTopic('article_soc')">13. Artículos de Novedades y Blog</li>
+      <li class="menu-item" onclick="loadTopic('details_nat')">14. Desplegables de Proveedores</li>
+      <li class="menu-item" onclick="loadTopic('iframe_map')">15. Ubicación de Sucursales</li>
+    </ul>
+
+    <div class="menu-section-title">🎨 15 Temas CSS</div>
+    <ul class="menu-list">
+      <li class="menu-item" onclick="loadTopic('colors')">16. Colores Institucionales</li>
+      <li class="menu-item" onclick="loadTopic('box_model')">17. Modelo de Cajas (Espaciados)</li>
+      <li class="menu-item" onclick="loadTopic('div_borders')">18. Contenedores y Bordes</li>
+      <li class="menu-item" onclick="loadTopic('buttons')">19. Botones de Compra e Interacción</li>
+      <li class="menu-item" onclick="loadTopic('flexbox')">20. Alineación con Flexbox</li>
+      <li class="menu-item" onclick="loadTopic('grid_cards')">21. Rejillas de Paneles KPI (Grid)</li>
+      <li class="menu-item" onclick="loadTopic('nav_css')">22. Estilo de Menú Corporativo</li>
+      <li class="menu-item" onclick="loadTopic('shadows')">23. Sombras y Elevación de Tarjetas</li>
+      <li class="menu-item" onclick="loadTopic('border_radius')">24. Bordes Redondeados</li>
+      <li class="menu-item" onclick="loadTopic('transitions')">25. Transiciones Animadas de Venta</li>
+      <li class="menu-item" onclick="loadTopic('theme_sports')">26. Diseños Estilo Tablero</li>
+      <li class="menu-item" onclick="loadTopic('gallery_art')">27. Catálogos Visuales</li>
+      <li class="menu-item" onclick="loadTopic('badge_eco')">28. Tarjetas de Resumen Financiero</li>
+      <li class="menu-item" onclick="loadTopic('press_style')">29. Maquetado de Reporte Semanal</li>
+      <li class="menu-item" onclick="loadTopic('responsive')">30. Adaptabilidad Móvil para Vendedores</li>
+    </ul>
+
+    <div class="menu-section-title js-title">⚡ 15 Temas JavaScript</div>
+    <ul class="menu-list">
+      <li class="menu-item js-item" onclick="loadTopic('js_alert')">31. Avisos y Confirmaciones</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_click')">32. Captura de Clics en Ofertas</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_variables')">33. Variables de Entrada de Precios</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_dom')">34. Actualizar Estado de Stock</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_color_change')">35. Alternar Modo Oscuro/Claro</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_input_read')">36. Lectura de Formulario Proveedor</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_toggle')">37. Mostrar/Ocultar Detalle Costos</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_counter')">38. Contador de Ventas Diarias</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_if_else')">39. Validaciones de CUIT/CUIL</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_speech')">40. Lectura por Voz de Informes</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_calc_eco')">41. Calculadora de IVA</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_imc_sports')">42. Calculadora Punto Equilibrio</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_quiz_soc')">43. Diagnóstico PYME</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_sim_nat')">44. Simulación Interés Compuesto</li>
+      <li class="menu-item js-item" onclick="loadTopic('js_art_canvas')">45. Gráfico Dinámico Rendimiento</li>
+    </ul>
+
+  </nav>
+
+  <!-- ÁREA DE TRABAJO PRINCIPAL DEL TEMA -->
+  <main class="content-area">
+
+    <!-- TARJETA DE TEORÍA ACCESIBLE -->
+    <section class="theory-card">
+      <div class="theory-header">
+        <h2 class="theory-title" id="topicTitle">1. Estructura Head y Body</h2>
+      </div>
+      <p class="theory-text text-slate-700" id="topicDescription">
+        Una página HTML para PYMES se divide en dos bloques: <code>&lt;head&gt;</code> guarda el título de la empresa y configuración, mientras que <code>&lt;body&gt;</code> contiene todo el catálogo e interfaz visible.
+      </p>
+    </section>
+
+    <!-- EDITOR Y VISTA PREVIA -->
+    <div class="workspace-grid">
+
+      <!-- PANEL DE CÓDIGO (ENTRADA) -->
+      <div class="editor-panel">
+        <div class="panel-title">📝 Editor de Código</div>
+        
+        <label for="htmlInput" class="font-bold text-sm">Código HTML:</label>
+        <textarea id="htmlInput" spellcheck="false"></textarea>
+
+        <label for="cssInput" class="font-bold text-sm">Estilos CSS:</label>
+        <textarea id="cssInput" spellcheck="false"></textarea>
+
+        <label for="jsInput" class="font-bold text-sm text-amber-700">Lógica JavaScript:</label>
+        <textarea id="jsInput" spellcheck="false"></textarea>
+
+        <button class="btn-run" onclick="updatePreview()">⚡ Ver Resultado en Pantalla</button>
+      </div>
+
+      <!-- PANEL DE RESULTADO (SALIDA VISUAL) -->
+      <div class="preview-panel">
+        <div class="panel-title">🖥️ Vista Previa Interactiva</div>
+        <div class="preview-box" id="previewOutput"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+  </section>
+
+  <!-- SECCIÓN 4: DESAFÍO ACCESIBLE DE PREGUNTAS (QUIZ) -->
+
+  <section aria-labelledby="titulo-desafios" class="max-w-7xl mx-auto px-4 mt-8 w-full">
+    <div class="card-accessible bg-white border-4 border-indigo-300 rounded-3xl p-6 shadow-lg">
+      <div class="flex items-center justify-between mb-4 border-b-2 border-indigo-100 pb-3">
+        <h2 id="titulo-desafios" class="text-2xl md:text-3xl font-extrabold text-indigo-950 flex items-center gap-3">
+          <span>🧩</span> Desafío Integrador de Gestión y Programación
+        </h2>
+        <button onclick="leerTextoPorId('pregunta-quiz')" class="btn-touch bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl shadow">
+          🔊 Leer Pregunta
+        </button>
+      </div>
+
+  <div class="bg-indigo-50 p-6 rounded-2xl border-2 border-indigo-200 text-center space-y-6">
+    <p id="pregunta-quiz" class="text-2xl font-bold text-indigo-950">
+      En un sistema web corporativo para PYMES (por ejemplo, una calculadora de margen de ganancia o un simulador de flujo de caja), ¿qué lenguaje procesa los cálculos y la lógica financiera?
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+      <button onclick="responderQuiz('html')" class="btn-touch bg-white hover:bg-sky-100 text-sky-900 border-4 border-sky-400 font-bold text-lg p-4 rounded-2xl shadow flex flex-col items-center gap-2">
+        <span class="text-3xl">🦴</span>
+        <span>HTML (Estructura)</span>
+      </button>
+
+      <button onclick="responderQuiz('css')" class="btn-touch bg-white hover:bg-pink-100 text-pink-900 border-4 border-pink-400 font-bold text-lg p-4 rounded-2xl shadow flex flex-col items-center gap-2">
+        <span class="text-3xl">🎨</span>
+        <span>CSS (Diseño)</span>
+      </button>
+
+      <button onclick="responderQuiz('js')" class="btn-touch bg-white hover:bg-amber-100 text-amber-900 border-4 border-amber-400 font-bold text-lg p-4 rounded-2xl shadow flex flex-col items-center gap-2">
+        <span class="text-3xl">⚡</span>
+        <span>JavaScript (Lógica y Cálculos)</span>
+      </button>
+    </div>
+
+    <div id="feedback-quiz" class="hidden p-4 rounded-xl font-bold text-xl transition-all"></div>
+  </div>
+</div>
+  </section>
+
+  <!-- PIE DE PÁGINA GENERAL -->
+
+  <footer class="mt-12 p-6 text-center text-slate-700 bg-sky-200 font-semibold text-sm border-t-2 border-sky-300">
+    <p>Tecnicatura Superior en PYMES • Herramientas Tecnológicas para la Gestión Emprendedora • Material Accesible DUA</p>
+  </footer>
+
+  <script>
+    /* BASE DE DATOS COMPLETA: 15 TEMAS HTML, 15 CSS Y 15 JS PARA PYMES */
+    const topics = {
+      // --- 15 TEMAS HTML ---
+      'head_body': {
+        title: '1. Estructura Head y Body en PYMES',
+        desc: 'Una página HTML corporativa se divide en <code>&lt;head&gt;</code> (configuración e información de marca) y <code>&lt;body&gt;</code> (catálogos, paneles e información pública).',
+        html: '<div class="cuerpo-demostracion">\n  <h2>🏢 Portal Oficial - Mi PYME S.R.L.</h2>\n  <p>Catálogo de servicios y atención al cliente.</p>\n</div>',
+        css: '.cuerpo-demostracion { background: #e0f2fe; padding: 15px; border-radius: 10px; border: 2px solid #0284c7; }',
+        js: ''
+      },
+      'header_footer': {
+        title: '2. Encabezado y Pie Institucional (<header> y <footer>)',
+        desc: 'Delimita el encabezado corporativo con su marca y el pie con CUIT, dirección y contacto.',
+        html: '<header class="demo-header">\n  <h2>💼 Gestor Comercial PYME</h2>\n</header>\n<main style="padding:10px 0;">\n  <p>Modulo de Control de Stock e Inventario.</p>\n</main>\n<footer class="demo-footer">\n  <p>CUIT: 30-71234567-8 | Administración Central PYME</p>\n</footer>',
+        css: '.demo-header { background: #fef08a; padding: 10px; text-align: center; border-radius: 8px; }\n.demo-footer { background: #cbd5e1; padding: 8px; text-align: center; border-radius: 8px; font-size: 14px; }',
+        js: ''
+      },
+      'h1_h6': {
+        title: '3. Jerarquía de Títulos (h1-h6)',
+        desc: 'Los títulos organizan los reportes ejecutivos desde <h1> (el título comercial) hasta <h6> (detalles contables mínimos).',
+        html: '<h1>Reporte Anual de Ventas PYME</h1>\n<h2>1. Balance de Operaciones</h2>\n<h3>1.1 Costos Directos e Indirectos</h3>',
+        css: 'h1 { color: #0f172a; }\nh2 { color: #0284c7; }\nh3 { color: #0369a1; }',
+        js: ''
+      },
+      'p': {
+        title: '4. Párrafos e Informes Ejecutivos (<p>)',
+        desc: 'Se utiliza para redactar descripciones de productos, políticas comerciales e informes de gestión.',
+        html: '<p>Nuestra PYME está enfocada en la producción sustentable y la optimización de procesos logísticos regionales.</p>',
+        css: 'p { font-size: 18px; color: #334155; line-height: 1.6; }',
+        js: ''
+      },
+      'lists': {
+        title: '5. Listas de Control de Inventario (ul, ol, li)',
+        desc: 'Permite crear listas de chequeo para control de calidad, proveedores y pasos operativos.',
+        html: '<h3>Checklist de Recepción de Mercadería:</h3>\n<ol>\n  <li>Verificar remito del proveedor</li>\n  <li>Controlar unidades físicas</li>\n  <li>Cargar en el sistema de stock</li>\n</ol>',
+        css: 'ol {\n  background: #f1f5f9;\n  padding: 15px 30px;\n  border-radius: 10px;\n  font-weight: bold;\n  list-style-type: decimal !important;\n}\nul {\n  list-style-type: disc !important;\n}',
+        js: ''
+      },
+      'links': {
+        title: '6. Hipervínculos a Catálogos (<a>)',
+        desc: 'Conecta con enlaces de pago, catálogos digitales o sitios oficiales de AFIP / ARBA.',
+        html: '<p>Descargue nuestro <a href="https://www.argentina.gob.ar/pymes" target="_blank">Catálogo de Productos PYME</a></p>',
+        css: 'a { color: #0284c7; font-weight: bold; text-decoration: none; }\na:hover { text-decoration: underline; }',
+        js: ''
+      },
+      'images': {
+        title: '7. Galería de Productos (<img>)',
+        desc: 'Muestra fotos de productos con el atributo "alt" descriptivo para accesibilidad en e-commerce.',
+        html: '<h3>Muestrario de Productos:</h3>\n<img src="https://picsum.photos/400/200" alt="Embalaje sustentable de la PYME">',
+        css: 'img { border-radius: 12px; border: 3px solid #0284c7; }',
+        js: ''
+      },
+      'form': {
+        title: '8. Formularios de Solicitud de Cotización (form, input)',
+        desc: 'Captura requerimientos de nuevos clientes e información para presupuestos.',
+        html: '<form onsubmit="return false;">\n  <label>Solicitar Cotización:</label><br>\n  <input type="text" placeholder="Su correo corporativo...">\n  <button type="button">Enviar</button>\n</form>',
+        css: 'input { padding: 8px; border-radius: 6px; border: 1px solid #94a3b8; }\nbutton { background: #10b981; color: white; padding: 8px 12px; border: none; border-radius: 6px; font-weight: bold; }',
+        js: ''
+      },
+      'nav_menu': {
+        title: '9. Menús de Navegación Comercial (<nav>)',
+        desc: 'Agrupa accesos rápidos a las distintas áreas de la empresa.',
+        html: '<nav class="menu-sec">\n  <a href="#">🏠 Inicio</a> |\n  <a href="#">📦 Productos</a> |\n  <a href="#">📊 Finanzas</a>\n</nav>',
+        css: '.menu-sec { background: #f8fafc; padding: 10px; border-radius: 8px; font-weight: bold; }',
+        js: ''
+      },
+      'sections': {
+        title: '10. Secciones Semánticas Corporativas (<section>)',
+        desc: 'Divide el sitio en departamentos (Finanzas, Marketing, Operaciones).',
+        html: '<section class="sec-art">\n  <h2>🏭 Área de Operaciones</h2>\n  <p>Capacidad instalada operando al 85%.</p>\n</section>',
+        css: '.sec-art { background: #f0fdf4; border-left: 5px solid #16a34a; padding: 12px; border-radius: 6px; }',
+        js: ''
+      },
+      'multimedia': {
+        title: '11. Video Promocional y Demo (<audio>, <video>)',
+        desc: 'Inserta spots publicitarios de la marca o capacitaciones internas.',
+        html: '<h3>🎥 Presentación Institucional:</h3>\n<audio controls>\n  <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">\n</audio>',
+        css: 'audio { width: 100%; max-width: 350px; }',
+        js: ''
+      },
+      'tables_eco': {
+        title: '12. Tablas de Balance y Costos (table)',
+        desc: 'Estructura balances contables, precios mayoristas y flujo de caja.',
+        html: '<table>\n  <tr><th>Insumo</th><th>Costo Unitario</th></tr>\n  <tr><td>Materia Prima A</td><td>$1.200</td></tr>\n</table>',
+        css: 'table { width: 100%; border-collapse: collapse; }\nth, td { border: 1px solid #cbd5e1; padding: 8px; }\nth { background: #fef08a; }',
+        js: ''
+      },
+      'article_soc': {
+        title: '13. Artículos de Novedades y Blog (<article>)',
+        desc: 'Publica noticias de lanzamientos, ofertas y eventos corporativos.',
+        html: '<article class="art-soc">\n  <h2>Nuevo Canal de Distribución</h2>\n  <p>Incorporamos entregas expresas en toda la región...</p>\n</article>',
+        css: '.art-soc { background: #f0f9ff; padding: 12px; border-radius: 8px; border: 1px solid #bae6fd; }',
+        js: ''
+      },
+      'details_nat': {
+        title: '14. Desplegables de Fichas de Proveedores (<details>)',
+        desc: 'Oculta y despliega información de contacto y condiciones comerciales.',
+        html: '<details>\n  <summary><b>📦 Proveedor Logístico (Clic para ver)</b></summary>\n  <p>Plazo de entrega: 48hs. Bonificación 10% por cantidad.</p>\n</details>',
+        css: 'details { background: #f0fdf4; padding: 10px; border-radius: 8px; border: 1px solid #bbf7d0; }',
+        js: ''
+      },
+      'iframe_map': {
+        title: '15. Ubicación de Sucursales (iframe)',
+        desc: 'Geolocaliza depósitos, locales comerciales o fábrica.',
+        html: '<h3>🌍 Sucursal Principal PYME:</h3>\n<iframe src="https://maps.google.com/maps?q=buenos%20aires&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="150" style="border:0; border-radius:8px;"></iframe>',
+        css: '',
+        js: ''
+      },
+
+
+      // --- 15 TEMAS CSS ---
+      'colors': {
+        title: '16. Colores Institucionales',
+        desc: 'Define los tonos corporativos de la marca.',
+        html: '<h2 class="titulo-orientacion">Identidad Visual PYME</h2>',
+        css: '.titulo-orientacion { color: #0284c7; font-size: 26px; font-weight: bold; }',
+        js: ''
+      },
+      'box_model': {
+        title: '17. Modelo de Cajas (Spacing)',
+        desc: 'Ajusta márgenes internos y externos de los bloques del tablero.',
+        html: '<div class="caja-espacio">Contenedor de Indicadores de Ventas</div>',
+        css: '.caja-espacio { background: #e0e7ff; padding: 20px; margin: 10px 0; border-radius: 8px; }',
+        js: ''
+      },
+      'div_borders': {
+        title: '18. Contenedores y Bordes',
+        desc: 'Enmarca secciones comerciales clave para llamar la atención del cliente.',
+        html: '<div class="tarjeta-borde"><h3>Promoción Especial Mayorista</h3></div>',
+        css: '.tarjeta-borde { border: 3px dashed #0284c7; padding: 15px; border-radius: 12px; }',
+        js: ''
+      },
+      'buttons': {
+        title: '19. Botones de Compra e Interacción',
+        desc: 'Otorga efectos visuales al pasar el cursor sobre llamados a la acción.',
+        html: '<button class="btn-hover">Confirmar Pedido</button>',
+        css: '.btn-hover { background: #0284c7; color: white; padding: 10px 20px; border: none; border-radius: 8px; transition: 0.3s; }\n.btn-hover:hover { background: #0369a1; transform: scale(1.05); }',
+        js: ''
+      },
+      'flexbox': {
+        title: '20. Alineación con Flexbox',
+        desc: 'Alinea datos de ventas y stock en filas flexibles.',
+        html: '<div class="flex-sports"><div>📦 Unidades: 450</div><div>💰 Facturación: $980.000</div></div>',
+        css: '.flex-sports { display: flex; justify-content: space-between; background: #dcfce7; padding: 15px; border-radius: 8px; font-weight: bold; }',
+        js: ''
+      },
+      'grid_cards': {
+        title: '21. Rejillas de Paneles KPI (Grid)',
+        desc: 'Muestra indicadores clave de la PYME en columnas ordenadas.',
+        html: '<div class="grid-3"><div>💼 Ventas</div><div>📦 Stock</div><div>👥 Clientes</div></div>',
+        css: '.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; font-weight: bold; }\n.grid-3 div { background: #bae6fd; padding: 15px; border-radius: 8px; }',
+        js: ''
+      },
+      'nav_css': {
+        title: '22. Estilo de Menú Corporativo',
+        desc: 'Crea una barra de navegación elegante para la Intranet.',
+        html: '<nav class="nav-horizontal"><a href="#">Panel</a><a href="#">Reportes</a></nav>',
+        css: '.nav-horizontal { display: flex; gap: 10px; background: #0f172a; padding: 10px; border-radius: 8px; }\n.nav-horizontal a { color: white; text-decoration: none; font-weight: bold; }',
+        js: ''
+      },
+      'shadows': {
+        title: '23. Sombras y Elevación Visual',
+        desc: 'Agrega relieve a las tarjetas financieras y productos destacados.',
+        html: '<div class="card-sombra">Presupuesto Aprobado</div>',
+        css: '.card-sombra { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); font-weight: bold; }',
+        js: ''
+      },
+      'border_radius': {
+        title: '24. Bordes Redondeados',
+        desc: 'Crea etiquetas redondeadas para ofertas o estado de entrega.',
+        html: '<div class="medalla">Stock OK</div>',
+        css: '.medalla { width: 90px; height: 90px; background: #16a34a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }',
+        js: ''
+      },
+      'transitions': {
+        title: '25. Transiciones Animadas de Venta',
+        desc: 'Otorga animación fluida al interactuar con ofertas.',
+        html: '<div class="animado">Pasa sobre este Producto</div>',
+        css: '.animado { background: #0284c7; color: white; padding: 15px; border-radius: 8px; transition: all 0.4s; text-align: center; }\n.animado:hover { background: #0369a1; border-radius: 20px; }',
+        js: ''
+      },
+      'theme_sports': {
+        title: '26. Diseños Estilo Tablero de Control',
+        desc: 'Aplica una interfaz limpia para tomar decisiones en la empresa.',
+        html: '<div class="card-deporte">📊 Panel Gerencial 2026</div>',
+        css: '.card-deporte { background: linear-gradient(135deg, #0284c7, #0f172a); color: white; padding: 15px; border-radius: 12px; font-weight: bold; text-align: center; }',
+        js: ''
+      },
+      'gallery_art': {
+        title: '27. Catálogos Visuales',
+        desc: 'Estiliza muestrarios de productos y ofertas.',
+        html: '<div class="marco-arte">📦 Producto Estrella PYME</div>',
+        css: '.marco-arte { border: 4px solid #0284c7; padding: 15px; background: #f0f9ff; font-weight: bold; text-align: center; }',
+        js: ''
+      },
+      'badge_eco': {
+        title: '28. Tarjetas de Resumen Financiero',
+        desc: 'Alineación de importes netos e impuestos.',
+        html: '<div class="balance-card"><span>Margen Operativo:</span> <strong>32%</strong></div>',
+        css: '.balance-card { display: flex; justify-content: space-between; background: #fef9c3; border: 2px solid #facc15; padding: 12px; border-radius: 8px; }',
+        js: ''
+      },
+      'press_style': {
+        title: '29. Maquetado de Reporte Semanal',
+        desc: 'Organiza reportes internos tipo boletín comercial.',
+        html: '<div class="nota-prensa"><h3>INFORME DE GESTIÓN</h3><p>Se alcanzó la meta de ventas mensual.</p></div>',
+        css: '.nota-prensa { border-top: 4px solid #0f172a; border-bottom: 2px solid #0f172a; padding: 10px 0; font-family: Arial, sans-serif; }',
+        js: ''
+      },
+      'responsive': {
+        title: '30. Adaptabilidad Móvil (Responsive)',
+        desc: 'Adapta la tienda web para el teléfono de vendedores y clientes.',
+        html: '<div class="responsive-box">Prueba cambiar el ancho del navegador</div>',
+        css: '.responsive-box { background: #0284c7; color: white; padding: 15px; border-radius: 8px; text-align: center; }\n@media(max-width: 600px){ .responsive-box { background: #10b981; } }',
+        js: ''
+      },
+
+
+      // --- 15 TEMAS JAVASCRIPT ---
+      'js_alert': {
+        title: '31. Avisos y Confirmaciones (alert)',
+        desc: 'Despliega notificaciones de estado o bienvenida.',
+        html: '<button id="btn1" class="btn-demo">Ver Notificación</button>',
+        css: '.btn-demo { background: #0284c7; color: white; padding: 10px; border-radius: 6px; font-weight: bold; }',
+        js: 'document.getElementById("btn1").onclick = function() {\n  alert("¡Bienvenido al Gestor Comercial de la PYME!");\n};'
+      },
+      'js_click': {
+        title: '32. Captura de Clics en Ofertas (onclick)',
+        desc: 'Registra cuando el usuario hace clic en comprar o solicitar datos.',
+        html: '<button id="btn2" class="btn-demo">Solicitar Descuento</button>\n<p id="res2" style="margin-top:8px; font-weight:bold;"></p>',
+        css: '.btn-demo { background: #10b981; color: white; padding: 10px; border-radius: 6px; font-weight: bold; }',
+        js: 'document.getElementById("btn2").onclick = function() {\n  document.getElementById("res2").textContent = "✅ ¡Solicitud enviada al área comercial!";\n};'
+      },
+      'js_variables': {
+        title: '33. Variables e Ingreso de Precios',
+        desc: 'Almacena precios de lista y descuentos en variables.',
+        html: '<div id="res3" class="box-info"></div>',
+        css: '.box-info { background: #fef08a; padding: 10px; border-radius: 6px; font-weight: bold; }',
+        js: 'let producto = "Insumo Industrial";\nlet precio = 15000;\ndocument.getElementById("res3").innerHTML = "Producto: " + producto + "<br>Precio de Lista: $" + precio;'
+      },
+      'js_dom': {
+        title: '34. Actualizar Estado de Stock en Vivo',
+        desc: 'Actualiza dinámicamente la disponibilidad de inventario.',
+        html: '<h3 id="titPrensa">Stock Actual: 15 unidades</h3>\n<button id="btn4" class="btn-demo">Registrar Venta</button>',
+        css: '.btn-demo { background: #d97706; color: white; padding: 8px; border-radius: 6px; }',
+        js: 'document.getElementById("btn4").onclick = function() {\n  document.getElementById("titPrensa").textContent = "Stock Actualizado: 14 unidades";\n};'
+      },
+      'js_color_change': {
+        title: '35. Cambiador de Estilos',
+        desc: 'Alterna paletas de color para promociones.',
+        html: '<div id="boxColor" style="padding:15px; background:#e2e8f0; border-radius:8px; font-weight:bold; text-align:center;">Tema Estándar</div>\n<button id="btn5" class="btn-demo" style="margin-top:8px;">Activar Modo Promocional</button>',
+        css: '.btn-demo { background: #16a34a; color: white; padding: 8px; border-radius: 6px; }',
+        js: 'document.getElementById("btn5").onclick = function() {\n  document.getElementById("boxColor").style.backgroundColor = "#bbf7d0";\n  document.getElementById("boxColor").textContent = "🚀 Modo Oferta Especial Activado";\n};'
+      },
+      'js_input_read': {
+        title: '36. Lectura de Formulario Proveedor',
+        desc: 'Captura el nombre o razón social ingresado.',
+        html: '<input type="text" id="inOpinion" placeholder="Razón Social del Proveedor..." style="padding:6px; width:100%;"><br>\n<button id="btn6" class="btn-demo" style="margin-top:8px;">Guardar Proveedor</button>\n<p id="res6" style="margin-top:8px; font-weight:bold; color:#0284c7;"></p>',
+        css: '.btn-demo { background: #0284c7; color: white; padding: 8px; border-radius: 6px; }',
+        js: 'document.getElementById("btn6").onclick = function() {\n  let val = document.getElementById("inOpinion").value;\n  document.getElementById("res6").textContent = val ? "Registrado: \\"" + val + "\\"" : "Escriba un nombre válido.";\n};'
+      },
+      'js_toggle': {
+        title: '37. Mostrar/Ocultar Detalle Costos',
+        desc: 'Muestra u oculta desglose de costos adicionales.',
+        html: '<button id="btn7" class="btn-demo">Mostrar/Ocultar Desglose</button>\n<div id="boxOculto" style="display:none; margin-top:8px; background:#fef08a; padding:10px; border-radius:6px; font-weight:bold;">💡 Costo Fijo: $50.000 | Costo Variable: $20.000</div>',
+        css: '.btn-demo { background: #8b5cf6; color: white; padding: 8px; border-radius: 6px; }',
+        js: 'document.getElementById("btn7").onclick = function() {\n  let b = document.getElementById("boxOculto");\n  b.style.display = (b.style.display === "none") ? "block" : "none";\n};'
+      },
+      'js_counter': {
+        title: '38. Contador de Ventas Diarias',
+        desc: 'Suma en tiempo real cada transacción del día.',
+        html: '<div style="text-align:center;">\n  <h2 id="numGol" style="font-size:36px; color:#16a34a;">0</h2>\n  <button id="btnGol" class="btn-demo">🛍️ Registrar Operación</button>\n</div>',
+        css: '.btn-demo { background: #16a34a; color: white; padding: 8px 16px; border-radius: 6px; font-weight: bold; }',
+        js: 'let ventas = 0;\ndocument.getElementById("btnGol").onclick = function() {\n  ventas++;\n  document.getElementById("numGol").textContent = ventas;\n};'
+      },
+      'js_if_else': {
+        title: '39. Validaciones Lógicas de Crédito',
+        desc: 'Valida si la compra supera el límite autorizado de crédito.',
+        html: '<button id="btn8" class="btn-demo">Evaluar Crédito</button>\n<p id="res8" style="margin-top:8px; font-weight:bold;"></p>',
+        css: '.btn-demo { background: #3b82f6; color: white; padding: 8px; border-radius: 6px; }',
+        js: 'let compra = 85000;\ndocument.getElementById("btn8").onclick = function() {\n  if(compra <= 100000) {\n    document.getElementById("res8").textContent = "✅ Operación Aprobada ($" + compra + ")";\n  } else {\n    document.getElementById("res8").textContent = "❌ Excede límite de crédito disponible";\n  }\n};'
+      },
+      'js_speech': {
+        title: '40. Lectura por Voz de Informes (DUA)',
+        desc: 'Lector automático para resúmenes de venta y accesibilidad.',
+        html: '<button id="btnVoice" class="btn-demo">🔊 Escuchar Resumen Ejecutivo</button>',
+        css: '.btn-demo { background: #ec4899; color: white; padding: 10px; border-radius: 6px; font-weight: bold; }',
+        js: 'document.getElementById("btnVoice").onclick = function() {\n  let m = new SpeechSynthesisUtterance("Informe diario: Las ventas alcanzaron el objetivo planificado.");\n  m.lang = "es-ES";\n  window.speechSynthesis.speak(m);\n};'
+      },
+      'js_calc_eco': {
+        title: '41. Calculadora de IVA (21%)',
+        desc: 'Calcula el impuesto sobre un precio neto ingresado.',
+        html: '<input type="number" id="numPrecio" placeholder="Precio sin IVA..." style="padding:6px;"><br>\n<button id="btnIva" class="btn-demo" style="margin-top:8px;">Calcular IVA + Total</button>\n<p id="resIva" style="margin-top:8px; font-weight:bold; color:#d97706;"></p>',
+        css: '.btn-demo { background: #d97706; color: white; padding: 8px; border-radius: 6px; }',
+        js: 'document.getElementById("btnIva").onclick = function() {\n  let p = parseFloat(document.getElementById("numPrecio").value);\n  if(!isNaN(p)) {\n    let total = p * 1.21;\n    document.getElementById("resIva").textContent = "Total con IVA (21%): $" + total.toFixed(2);\n  } else {\n    document.getElementById("resIva").textContent = "Ingrese un número válido.";\n  }\n};'
+      },
+      'js_imc_sports': {
+        title: '42. Calculadora Punto de Equilibrio',
+        desc: 'Calcula unidades a vender según Costos Fijos y Margen.',
+        html: '<input type="number" id="inPeso" placeholder="Costos Fijos ($)" style="padding:6px; width:48%;"> \n<input type="number" id="inAltura" placeholder="Margen U. ($)" style="padding:6px; width:48%;"><br>\n<button id="btnImc" class="btn-demo" style="margin-top:8px;">Calcular Unidades</button>\n<p id="resImc" style="margin-top:8px; font-weight:bold; color:#16a34a;"></p>',
+        css: '.btn-demo { background: #16a34a; color: white; padding: 8px; border-radius: 6px; }',
+        js: 'document.getElementById("btnImc").onclick = function() {\n  let cf = parseFloat(document.getElementById("inPeso").value);\n  let m = parseFloat(document.getElementById("inAltura").value);\n  if(cf && m) {\n    let eq = cf / m;\n    document.getElementById("resImc").textContent = "Punto de Equilibrio: " + Math.ceil(eq) + " unidades";\n  } else {\n    document.getElementById("resImc").textContent = "Complete ambos campos.";\n  }\n};'
+      },
+      'js_quiz_soc': {
+        title: '43. Cuestionario de Diagnóstico PYME',
+        desc: 'Evalúa aspectos de gestión estratégica de la empresa.',
+        html: '<p style="font-weight:bold;">¿Qué indicador mide la liquidez inmediata?</p>\n<button id="q1" class="btn-demo">Prueba Ácida</button> \n<button id="q2" class="btn-demo">ROI</button>\n<p id="resQuiz" style="margin-top:8px; font-weight:bold;"></p>',
+        css: '.btn-demo { background: #0284c7; color: white; padding: 6px 12px; border-radius: 6px; }',
+        js: 'document.getElementById("q1").onclick = function() {\n  document.getElementById("resQuiz").textContent = "🎉 ¡CORRECTO! Mide la capacidad de pago a corto plazo sin inventario.";\n};\ndocument.getElementById("q2").onclick = function() {\n  document.getElementById("resQuiz").textContent = "❌ Incorrecto. El ROI mide el retorno de la inversión.";\n};'
+      },
+      'js_sim_nat': {
+        title: '44. Simulación Interés Compuesto',
+        desc: 'Calcula rendimiento de inversiones o financiamiento.',
+        html: '<div id="planta" style="font-size:24px; text-align:center; font-weight:bold;">Capital Base: $100.000</div>\n<button id="btnSol" class="btn-demo" style="width:100%; margin-top:8px;">📈 Aplicar Interés (10%)</button>',
+        css: '.btn-demo { background: #eab308; color: white; padding: 8px; border-radius: 6px; font-weight: bold; }',
+        js: 'let cap = 100000;\ndocument.getElementById("btnSol").onclick = function() {\n  cap *= 1.10;\n  document.getElementById("planta").textContent = "Capital Acumulado: $" + cap.toFixed(2);\n};'
+      },
+      'js_art_canvas': {
+        title: '45. Gráfico Dinámico de Rendimiento',
+        desc: 'Genera vistas comparativas dinámicas para tableros.',
+        html: '<div id="lienzoArt" style="height:80px; background:#f8fafc; border:2px dashed #0284c7; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold;">Panel Neutro</div>\n<button id="btnPintar" class="btn-demo" style="margin-top:8px; width:100%;">📊 Simular Rendimiento Operativo</button>',
+        css: '.btn-demo { background: #0284c7; color: white; padding: 8px; border-radius: 6px; font-weight: bold; }',
+        js: 'const estados = ["#bbf7d0 - Rendimiento Óptimo", "#fef08a - Rendimiento Medio", "#fbcfe8 - Atención Requerida"];\ndocument.getElementById("btnPintar").onclick = function() {\n  let item = estados[Math.floor(Math.random() * estados.length)];\n  let partes = item.split(" - ");\n  document.getElementById("lienzoArt").style.backgroundColor = partes[0];\n  document.getElementById("lienzoArt").textContent = "Estado: " + partes[1];\n};'
+      }
+    };
+
+
+    let currentTopicKey = 'head_body';
+
+
+    /* LÓGICA DE NAVEGACIÓN Y CARGA DE TEMAS */
+    function loadTopic(key) {
+      currentTopicKey = key;
+      const topic = topics[key];
+
+
+      document.getElementById('topicTitle').textContent = topic.title;
+      document.getElementById('topicDescription').innerHTML = topic.desc;
+
+
+      document.getElementById('htmlInput').value = topic.html || '';
+      document.getElementById('cssInput').value = topic.css || '';
+      document.getElementById('jsInput').value = topic.js || '';
+
+
+      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+      const activeItem = Array.from(document.querySelectorAll('.menu-item')).find(el => el.getAttribute('onclick').includes(`'${key}'`));
+      if(activeItem) activeItem.classList.add('active');
+
+
+      updatePreview();
+    }
+
+
+    function updatePreview() {
+      const htmlCode = document.getElementById('htmlInput').value;
+      const cssCode = document.getElementById('cssInput').value;
+      const jsCode = document.getElementById('jsInput').value;
+      const output = document.getElementById('previewOutput');
+
+
+      output.innerHTML = `<style>${cssCode}</style>${htmlCode}`;
+
+  if(jsCode.trim() !== '') {
+    try {
+      const script = document.createElement('script');
+      script.textContent = jsCode;
+      output.appendChild(script);
+    } catch(e) {
+      console.error("Error en JS: ", e);
+    }
+  }
+}
+
+/* SIMULADOR RÁPIDO INTERACTIVO */
+function actualizarSimuladorRapido() {
+  const tituloText = document.getElementById('input-titulo').value || 'Mi PYME S.R.L.';
+  const emojiVal = document.getElementById('select-emoji').value;
+  const colorFondo = document.getElementById('select-color-fondo').value;
+  const tamanoLetra = document.getElementById('select-tamano').value;
+
+  const pantalla = document.getElementById('pantalla-preview');
+  const previewTitulo = document.getElementById('preview-titulo');
+  const previewEmoji = document.getElementById('preview-emoji');
+
+  pantalla.style.backgroundColor = colorFondo;
+  previewTitulo.style.fontSize = tamanoLetra;
+  previewTitulo.textContent = tituloText;
+  previewEmoji.textContent = emojiVal;
+
+  document.getElementById('codigo-html').textContent = `<div class="tarjeta-pyme">\n  <span>${emojiVal}</span>\n  <h1>${tituloText}</h1>\n</div>`;
+  document.getElementById('codigo-css').textContent = `.tarjeta-pyme {\n  background-color: ${colorFondo};\n  font-size: ${tamanoLetra};\n  text-align: center;\n}`;
+}
+
+/* ACCESIBILIDAD DUA: LECTURA POR VOZ */
+function leerTexto(texto) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(texto);
+    utterance.lang = 'es-ES';
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+  } else {
+    alert("La síntesis de voz no está soportada en este navegador.");
+  }
+}
+
+function leerTextoPorId(idElemento) {
+  const elemento = document.getElementById(idElemento);
+  if (elemento) leerTexto(elemento.innerText);
+}
+
+function speakCurrentTheory() {
+  const textToRead = document.getElementById('topicTitle').textContent + ". " + document.getElementById('topicDescription').textContent;
+  leerTexto(textToRead);
+}
+
+/* CONTRASTE Y FUENTE DUA */
+function toggleContrast() {
+  document.body.classList.toggle('high-contrast');
+  document.body.classList.toggle('alto-contraste');
+}
+
+function toggleFuenteLetra() {
+  document.body.classList.toggle('dyslexia-font');
+}
+
+/* REFUERZO POSITIVO */
+function celebrateAchievement() {
+  confetti({
+    particleCount: 120,
+    spread: 80,
+    origin: { y: 0.6 }
+  });
+  leerTexto("¡Excelente trabajo! Has completado la práctica de herramientas tecnológicas para PYMES.");
+}
+
+function responderQuiz(opcion) {
+  const feedback = document.getElementById('feedback-quiz');
+  feedback.classList.remove('hidden', 'bg-red-100', 'text-red-800', 'bg-green-100', 'text-green-800');
+
+  if (opcion === 'js') {
+    feedback.classList.add('bg-green-100', 'text-green-800');
+    feedback.innerHTML = "🎉 ¡CORRECTO! JavaScript ejecuta los cálculos contables, cotizaciones e interacciones en tiempo real.";
+    celebrateAchievement();
+  } else {
+    feedback.classList.add('bg-red-100', 'text-red-800');
+    feedback.innerHTML = "💡 ¡Casi! HTML da la estructura y CSS el diseño visual. JavaScript es la LÓGICA que realiza los cálculos comerciales.";
+    leerTexto("¡Casi! Recuerda que JavaScript realiza los cálculos y la lógica.");
+  }
+}
+
+window.onload = function() {
+  actualizarSimuladorRapido();
+  loadTopic('head_body');
+};
+  </script>
+</body>
+</html>
